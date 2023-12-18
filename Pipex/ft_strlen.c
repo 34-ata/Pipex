@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: faata <faata@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/11 18:18:17 by marvin            #+#    #+#             */
-/*   Updated: 2023/10/16 14:24:04 by faata            ###   ########.fr       */
+/*   Created: 2023/10/11 18:23:51 by marvin            #+#    #+#             */
+/*   Updated: 2023/12/18 16:58:55 by faata            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "pipex.h"
 
-void	*ft_calloc(size_t count, size_t size)
+size_t	ft_strlen(const char	*s)
 {
-	void	*ptr;
+	size_t	i;
 
-	ptr = malloc(count * size);
-	if (!ptr)
-		return (NULL);
-	return (ft_bzero(ptr, count * size), ptr);
+	i = 0;
+	while (s[i] && (i++, 1))
+		;
+	return (i);
 }

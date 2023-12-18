@@ -1,19 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: faata <faata@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/12 20:19:44 by faata             #+#    #+#             */
-/*   Updated: 2023/10/12 20:19:50 by faata            ###   ########.fr       */
+/*   Created: 2023/10/11 18:23:38 by marvin            #+#    #+#             */
+/*   Updated: 2023/12/18 17:15:28 by faata            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "pipex.h"
 
-int	ft_isalpha(int arg)
+size_t	ft_strlcpy(char	*dest, const char	*src, size_t sz)
 {
-	return ((arg >= 65 && arg <= 90)
-		|| (arg >= 97 && arg <= 122));
+	size_t	i;
+
+	i = 0;
+	if (!sz)
+		return (ft_strlen(src));
+	while (src[i] && i < sz - 1)
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	return (dest[i] = '\0', ft_strlen(src));
 }

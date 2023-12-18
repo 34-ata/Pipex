@@ -1,21 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memchr.c                                        :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: faata <faata@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/11 18:19:52 by marvin            #+#    #+#             */
-/*   Updated: 2023/10/15 19:42:49 by faata            ###   ########.fr       */
+/*   Created: 2023/10/11 18:22:23 by marvin            #+#    #+#             */
+/*   Updated: 2023/12/18 16:57:27 by faata            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 
-void	*ft_memchr(const void *s, int c, size_t n)
+#include "pipex.h"
+
+char	*ft_strchr(const char	*s, int c)
 {
-	while (n--)
-		if (*(unsigned char *)s++ == (unsigned char)c)
-			return ((void *)--s);
-	return ((void *)0);
+	while (*s)
+		if (*s++ == (char)c)
+			return ((char *)--s);
+	if ((char)c == '\0')
+		return ((char *)s);
+	return (0);
 }

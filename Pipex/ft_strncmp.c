@@ -1,22 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstlast.c                                       :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: faata <faata@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/15 15:37:34 by faata             #+#    #+#             */
-/*   Updated: 2023/10/15 15:37:54 by faata            ###   ########.fr       */
+/*   Created: 2023/10/11 18:24:22 by marvin            #+#    #+#             */
+/*   Updated: 2023/12/18 16:59:32 by faata            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "pipex.h"
 
-t_list	*ft_lstlast(t_list	*lst)
+int	ft_strncmp(const char	*s1, const char	*s2, size_t n)
 {
-	if (lst == NULL)
-		return (NULL);
-	while (lst->next)
-		lst = lst->next;
-	return (lst);
+	while (((unsigned char)*s1 || (unsigned char)*s2) && n--)
+		if ((unsigned char)*s1++ != (unsigned char)*s2++)
+			return ((unsigned char)*--s1 - (unsigned char)*--s2);
+	return (0);
 }

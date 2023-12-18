@@ -6,11 +6,12 @@
 /*   By: faata <faata@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 18:22:11 by marvin            #+#    #+#             */
-/*   Updated: 2023/10/16 20:26:53 by faata            ###   ########.fr       */
+/*   Updated: 2023/12/18 16:57:32 by faata            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+
+#include "pipex.h"
 
 static int	count_strings(char const	*str, char c, int i, int count)
 {

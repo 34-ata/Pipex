@@ -1,18 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: faata <faata@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/11 18:21:01 by marvin            #+#    #+#             */
-/*   Updated: 2023/10/12 20:20:30 by faata            ###   ########.fr       */
+/*   Created: 2023/10/11 18:22:45 by marvin            #+#    #+#             */
+/*   Updated: 2023/12/18 17:10:15 by faata            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "pipex.h"
 
-void	ft_putchar_fd(char c, int fd)
+char	*ft_strdup(const char	*src)
 {
-	write(fd, &c, 1);
+	char	*dest;
+
+	dest = (char *)malloc(sizeof(char) * ft_strlen(src) + 1);
+	if (!dest)
+		return (NULL);
+	ft_strlcpy(dest, src, ft_strlen(src) + 1);
+	return (dest);
 }

@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: faata <faata@student.42.tr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/19 12:26:49 by faata             #+#    #+#             */
+/*   Updated: 2023/12/19 12:27:07 by faata            ###   ########.tr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex.h"
 
-char *take_path(char **env, char *set)
+char	*take_path(char **env, char *set)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (ft_strncmp(env[i], set, 5) != 0)
@@ -12,84 +24,73 @@ char *take_path(char **env, char *set)
 	return (0);
 }
 
-
-int main(int ac, char *av[], char **env)
+void	ft_error(char *str)
 {
-    pid_t pid;
-    int status;
-    char **path;
-    int i;
-    char *temp;
-	int fd[2];
-	int input;
-	int output;
-	char **flags;
+	perror(str);
+	exit (127);
+}
 
-    i = 0;
+void	son_process(t_pipe	*def, char *av[], char **env)
+{
+	def->flags = ft_split(av[2], ' ');
+	close (def->fd[0]);
+	def->input = open(av[1], O_RDONLY, 0644);
+	if (def->input == -1)
+		ft_error("Input File!");
+	dup2(def->fd[1], 1);
+	close (def->fd[1]);
+	dup2(def->input, 0);
+	close (def->input);
+	while (def->path[def->i])
+	{
+		def->temp = ft_strjoin(ft_strjoin(def->path[def->i],
+					"/"), def->flags[0]);
+		if (!access(def->temp, F_OK))
+			execve(def->temp, def->flags, env);
+		def->i++;
+	}
+	ft_error("Child Command!");
+}
+
+void	father_process(t_pipe	*def, char *av[], char **env)
+{
+	waitpid(def->pid, &def->status, 0);
+	def->flags = ft_split(av[3], ' ');
+	def->i = 0;
+	def->output = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (def->output == -1)
+		ft_error("Output File!");
+	close (def->fd[1]);
+	dup2 (def->fd[0], 0);
+	close (def->fd[0]);
+	dup2 (def->output, 1);
+	while (def->path[def->i])
+	{
+		def->temp = ft_strjoin(ft_strjoin(def->path[def->i],
+					"/"), def->flags[0]);
+		if (execve(def->temp, def->flags, env) == -1)
+			def->i++;
+	}
+	ft_error("Output File!");
+}
+
+int	main(int ac, char *av[], char **env)
+{
+	t_pipe	def;
+
+	def.i = 0;
 	if (ac != 5)
-	{
-		perror("Invalid argument count");
-		return (1);
-	}
-    path = ft_split(take_path(env, "PATH="), ':');
-	if (!path)
-	{
-		perror("Can't find path");
-		return (1);
-	}
-	pipe(fd);
-    pid = fork();
-    if (pid < 0)
-    {
-        perror ("Fork!");
-        exit (1);
-    }
-    else if (pid == 0)
-    {
-		flags = ft_split(av[2], ' ');
-		close (fd[0]);
-		input = open(av[1], O_RDONLY, 0644);
-		if (input == -1)
-		{
-			perror("Input File!");
-			exit(1);
-		}	
-		dup2(fd[1], 1);
-		close (fd[1]);
-		dup2(input, 0);
-		close (input);
-        while (path[i])
-        {
-            temp = ft_strjoin(ft_strjoin(path[i], "/"), flags[0]);
-			if (!access(temp, F_OK))
-				execve(temp, flags, env);
-            i++;
-		}
-        perror("Command!");
-        exit(1);
-    }
-    else
-	{
-        waitpid(pid, &status, 0);
-		flags = ft_split(av[3], ' ');
-		i = 0;
-		output = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (output == -1)
-		{
-			perror ("Output File!");
-			exit (1);
-		}
-		close (fd[1]);
-		dup2 (fd[0], 0);
-		close (fd[0]);
-		dup2 (output, 1);
-		while (path[i])
-        {
-            temp = ft_strjoin(ft_strjoin(path[i], "/"), flags[0]);
-			if (execve(temp, flags, env) == -1)
-                	i++;
-		}
-        perror("Command!");
-        exit(1);
-	}
+		ft_error("Invalid argument count");
+	def.path = ft_split(take_path(env, "PATH="), ':');
+	if (!def.path)
+		ft_error("Can't find path");
+	pipe(def.fd);
+	def.pid = fork();
+	if (def.pid < 0)
+		ft_error("Fork!");
+	else if (def.pid == 0)
+		son_process(&def, av, env);
+	else
+		father_process(&def, av, env);
+	return (0);
 }

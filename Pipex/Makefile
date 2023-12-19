@@ -1,4 +1,4 @@
-SRCS = ft_split.c ft_strchr.c ft_strjoin.c ft_strncmp.c ft_substr.c pipex.c ft_strlen.c ft_strlcpy.c ft_strdup.c
+SRCS = pipex.c pipex_utils_1.c pipex_utils_2.c
 
 NAME = pipex
 
@@ -12,9 +12,11 @@ $(NAME):
 	${CC} ${FLAGS} ${SRCS} -o ${NAME}
 
 clean:
-	rm -rf ${NAME}
+	rm -rf *.txt
 
 fclean: clean
 	rm -rf ${NAME}
 
 re:	fclean all
+
+.PHONY: all clean fclean re

@@ -27,7 +27,7 @@ char	*take_path(char **env, char *set)
 void	ft_error(char *str)
 {
 	perror(str);
-	exit (127);
+	exit (EXIT_FAILURE);
 }
 
 void	son_process(t_pipe	*def, char *av[], char **env)
@@ -43,10 +43,12 @@ void	son_process(t_pipe	*def, char *av[], char **env)
 	close (def->input);
 	while (def->path[def->i])
 	{
-		def->temp = ft_strjoin(ft_strjoin(def->path[def->i],
-					"/"), def->flags[0]);
+		def->temp2 = ft_strjoin(def->path[def->i], "/");
+		def->temp = ft_strjoin(def->temp2, def->flags[0]);
+		free(def->temp2);
 		if (!access(def->temp, F_OK))
 			execve(def->temp, def->flags, env);
+		free(def->temp);
 		def->i++;
 	}
 	ft_error("Child Command!");
@@ -66,10 +68,13 @@ void	father_process(t_pipe	*def, char *av[], char **env)
 	dup2 (def->output, 1);
 	while (def->path[def->i])
 	{
-		def->temp = ft_strjoin(ft_strjoin(def->path[def->i],
-					"/"), def->flags[0]);
-		if (execve(def->temp, def->flags, env) == -1)
-			def->i++;
+		def->temp2 = ft_strjoin(def->path[def->i], "/");	
+		def->temp = ft_strjoin(def->temp2, def->flags[0]);
+		free(def->temp2);
+		if (!access(def->temp, F_OK))
+			execve(def->temp, def->flags, env);
+		free(def->temp);
+		def->i++;
 	}
 	ft_error("Output File!");
 }
